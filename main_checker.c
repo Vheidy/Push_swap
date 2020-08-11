@@ -6,18 +6,16 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 11:57:19 by vheidy            #+#    #+#             */
-/*   Updated: 2020/08/06 19:11:42 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/08/11 17:59:57 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 /*задачи:
-Доделать считываемость
-Сделать проверку на считываемость
+Починить кроп
 Написать проверку на отсортированность в файле валидность
 Допилить работу всей программы в целом
 */
-/* считывание заканчивается на ctrl + D (EOF) */
 
 void	error()
 {
@@ -25,21 +23,33 @@ void	error()
 	exit(0);
 }
 
-// считывание команд if (read(fd, buf, 0) < 0)
-
-char	*ft_crop(char *buf) {
-	int i;
+char	*ft_crop(char *buf, t_stack *st) {
+	char *begin;
 	char *str;
 
-	i = 0;
-	while (*buf != '\n') {
-		str[i++] = *buf;
-		*buf++;
-	}
-	str[i] = '\0';
-	return str;
+	// str = *buf;
+	str = malloc(sizeof(char) * (st->size_A - 1));
+	begin = str;
+	while (*buf != '\n' && *buf != '\0')
+		*str++ = *buf++;
+	*str = '\0';
+	return begin;
 }
 
+// char	*ft_crop(char *buf) {
+// 	int i;
+// 	char *str;
+
+// 	i = 0;
+// 	printf("==5==\n");
+// 	while (buf[i] != '\n' && buf[i] != '\0') {
+// 		str[i] = buf[i];
+// 		i++;
+// 	}
+// 	str[i] = '\0';
+// 	printf("==6==\n");
+// 	return str;
+// }
 
 
 
@@ -53,23 +63,33 @@ int		ft_read_command(t_stack *st)
 {
 	int red;
 	char *command;
-	
-	char buf[5];
-	while(red = read(0, buf, 4) > 0) {
-		buf[red] = '\0';
-		if (!(ft_choose_command(ft_crop(buf), st)))
+	char *buf;
+
+	// printf("----4----\n");
+	while ((red = get_next_line(0, &buf))) {
+		// printf("==5==\n");
+		if (!(ft_choose_command(ft_crop(buf, st), st))) // выполнение команды и проверка ее на валидность
 			error();
+			// printf("==6==\n");
 		st->flag = 0;
 	}
+	if (ft_check_order(st)) {
+		write(1, "OK\n", 3);
+	}
+	else {
+		write(1, "KO\n", 3);
+	}
+	return 0;
 }
 
-void	ft_create_struct(t_stack *st, int ac)
+int	ft_create_struct(t_stack *st, int ac)
 {
 	if (!(st->stack_A = malloc(sizeof(int) * ac)) || !(st->stack_B = malloc(sizeof(int) * ac)))
-		return NULL;
+		return 0;
 	st->size_A = ac;
 	st->size_B = 0;
 	st->flag = 0;
+	return 1;
 }
 
 int		main(int ac, char **av)
@@ -79,16 +99,15 @@ int		main(int ac, char **av)
 
 	if (ac == 1)
 		return 0;
-	ft_create_struct(&st, (ac - 1));
+	printf("==1==\n");
+	if (!ft_create_struct(&st, (ac - 1)))
+		error();
+	printf("==2==\n");
 	st.stack_A = ft_valid_digit((ac - 1), av);
-	while (i < (ac - 1)) {
-		printf("%d\n", st.stack_A[i++]);
-	}
-	if (ft_read_command(&st)) {
-		write(1, "OK\n", 3);
-	}
-	else {
-		write(1, "KO\n", 3);
-	}
+	printf("==3==\n");
+	// while (i < (ac - 1)) {
+	// 	printf("%d\n", st.stack_A[i++]);
+	// }
+	ft_read_command(&st);
 	return 0;
 }

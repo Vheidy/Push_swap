@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_word.c                                          :+:      :+:    :+:   */
+/*   ft_strjoin_free.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rtacos <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vheidy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/18 23:30:43 by rtacos            #+#    #+#             */
-/*   Updated: 2019/09/19 19:05:00 by rtacos           ###   ########.fr       */
+/*   Created: 2019/09/30 20:00:20 by vheidy            #+#    #+#             */
+/*   Updated: 2019/09/30 20:07:05 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_word(const char *s, char c)
+char	*ft_strjoin_free(char *s1, char *s2, int f1, int f2)
 {
-	size_t	w;
+	char	*tmp;
 
-	w = 0;
-	while (*s)
+	if (!s1)
 	{
-		if (*s != c && (*(s + 1) == c || *(s + 1) == '\0'))
-			w++;
-		s++;
+		s1 = ft_strnew(0);
+		f1 = 1;
 	}
-	return (w);
+	if (!s2)
+	{
+		s2 = ft_strnew(0);
+		f2 = 1;
+	}
+	tmp = ft_strjoin(s1, s2);
+	if (f1 == 1)
+		free(s1);
+	if (f2 == 1)
+		free(s2);
+	return (tmp);
 }

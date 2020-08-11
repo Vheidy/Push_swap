@@ -3,39 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rtacos <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vheidy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/15 19:13:08 by rtacos            #+#    #+#             */
-/*   Updated: 2019/09/17 18:11:43 by rtacos           ###   ########.fr       */
+/*   Created: 2019/09/16 18:18:22 by vheidy            #+#    #+#             */
+/*   Updated: 2019/09/17 19:51:31 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_putnbr_fd(int n, int fd)
+void	ft_putnbr_fd(int n, int fd)
 {
-	unsigned int	i;
-	int				b;
-	int				count;
+	char	str[11];
+	int		i;
 
-	b = 1000000000;
-	count = 0;
-	if ((i = (unsigned int)n) == 0)
-		b = 1;
+	i = 0;
 	if (n < 0)
-	{
-		i = (unsigned int)(n * -1);
 		ft_putchar_fd('-', fd);
-		count++;
-	}
-	while (i && (i / b) == 0)
-		b = b / 10;
-	while (b)
+	while (n >= 10 || n <= -10)
 	{
-		ft_putchar_fd(i / b + '0', fd);
-		count++;
-		i = i % b;
-		b = b / 10;
+		if (n > 0)
+			str[i++] = n % 10 + '0';
+		else
+			str[i++] = n % 10 * -1 + '0';
+		n = n / 10;
 	}
-	return (count);
+	if (n < 0)
+		n = n * -1;
+	str[i] = n % 10 + '0';
+	while (i >= 0)
+		ft_putchar_fd(str[i--], fd);
 }

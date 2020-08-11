@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 17:57:42 by vheidy            #+#    #+#             */
-/*   Updated: 2020/08/06 18:55:06 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/08/11 19:34:58 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,12 @@ void	ft_reverse_rotate(int **stack, int size, int *fl) // принимает siz
 	int *begin;
 
 	*fl = 1;
-	if (size > 1) {
+	if (size >= 0) {
 		last = (*stack)[size];
 		tmp = *stack;
 		begin = tmp;
+		if (!size)
+			tmp[size + 1] = tmp[size];
 		while (size) {
 			tmp[size] = tmp[size - 1];
 			size--;
@@ -71,7 +73,7 @@ void	ft_push(int **from, int **where, int *size_fr, int *size_wr) // прини�
 	int c;
 
 	c = 0;
-	if (size_fr > 0) {
+	if (*size_fr > 0) {
 		ft_reverse_rotate(where, (*size_wr - 1), &c);
 		*where[0] = *from[0];
 		*size_wr += 1;
@@ -83,24 +85,24 @@ void	ft_push(int **from, int **where, int *size_fr, int *size_wr) // прини�
 
 int	ft_choose_command(char *str, t_stack *st)
 {
-	if (str == "sa" || str == "ss")
+	if (!ft_strcmp(str, "sa") || !ft_strcmp(str,"ss"))
 		ft_swap(&st->stack_A, st->size_A, &st->flag);
-	if (str == "sb" || str == "ss")
+	if (!ft_strcmp(str, "sb") || !ft_strcmp(str, "ss"))
 		ft_swap(&st->stack_B, st-> size_B, &st->flag);
-	if (str == "pa" || str == "pb")
+	if (!ft_strcmp(str, "pa") || !ft_strcmp(str, "pb"))
 		st->flag = 1;
-	if (str == "pa")
+	if (!ft_strcmp(str, "pa"))
 		ft_push(&st->stack_B, &st->stack_A, &st->size_B, &st->size_A);
-	if (str == "pb")
+	if (!ft_strcmp(str, "pb"))
 		ft_push(&st->stack_A, &st->stack_B, &st->size_A, &st->size_B);
-	if (str == "ra" || str == "rr")
+	if (!ft_strcmp(str, "ra") || !ft_strcmp(str, "rr"))
 		ft_rotate(&st->stack_A, st->size_A, &st->flag);
-	if (str == "rb" || str == "rr")
+	if (!ft_strcmp(str, "rb") || !ft_strcmp(str, "rr"))
 		ft_rotate(&st->stack_B, st->size_B, &st->flag);
-	if (str == "rra" || str == "rrr")
-		ft_reverse_rotate(&st->stack_A, st->size_A, &st->flag);
-	if (str == "rrb" || str == "rrr")
-		ft_reverse_rotate(&st->stack_B, st->size_B, &st->flag);
+	if (!ft_strcmp(str, "rra") || !ft_strcmp(str, "rrr"))
+		ft_reverse_rotate(&st->stack_A, (st->size_A - 1), &st->flag);
+	if (!ft_strcmp(str, "rrb") || !ft_strcmp(str, "rrr"))
+		ft_reverse_rotate(&st->stack_B, (st->size_B - 1), &st->flag);
 	if (!st->flag)
 		return 0;
 	return 1;

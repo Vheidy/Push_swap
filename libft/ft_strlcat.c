@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rtacos <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vheidy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/10 20:02:32 by rtacos            #+#    #+#             */
-/*   Updated: 2019/09/15 20:35:48 by rtacos           ###   ########.fr       */
+/*   Created: 2019/09/06 12:38:23 by vheidy            #+#    #+#             */
+/*   Updated: 2019/09/11 19:15:29 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,26 @@
 
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	size_t	j;
 	size_t	i;
-	size_t	k;
+	size_t	j;
+	char	*s1;
+	char	*s2;
 
-	j = 0;
 	i = 0;
-	while (dst[i] && i < size)
+	j = 0;
+	s1 = (char*)dst;
+	s2 = (char*)src;
+	if (size == 0)
+		return (ft_strlen(s2));
+	while (s1[i] != '\0' && i < size)
 		i++;
-	k = i;
-	while (src[j] && k < (size - 1) && size)
-		dst[k++] = src[j++];
-	if (k < size)
-		dst[k] = '\0';
-	return (ft_strlen(src) + i);
+	j = i;
+	while (s2[i - j] != '\0' && i < size - 1)
+	{
+		s1[i] = s2[i - j];
+		i++;
+	}
+	if (i < size)
+		s1[i] = '\0';
+	return (j + ft_strlen(s2));
 }

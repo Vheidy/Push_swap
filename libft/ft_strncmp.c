@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rtacos <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vheidy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/13 13:03:07 by rtacos            #+#    #+#             */
-/*   Updated: 2019/09/14 15:44:37 by rtacos           ###   ########.fr       */
+/*   Created: 2019/09/09 17:14:50 by vheidy            #+#    #+#             */
+/*   Updated: 2019/09/11 19:17:26 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,20 @@
 
 int		ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	size_t i;
+	size_t			i;
+	unsigned char	*str1;
+	unsigned char	*str2;
 
 	i = 0;
-	if (n == 0)
-		return (0);
-	while (s1[i] && s2[i] && s1[i] == s2[i] && --n)
+	str1 = (unsigned char*)s1;
+	str2 = (unsigned char*)s2;
+	while (str1[i] != '\0' && str2[i] != '\0' && i < n)
+	{
+		if (str1[i] != str2[i])
+			return (str1[i] - str2[i]);
 		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	}
+	if ((str1[i] == '\0' && str2[i] == '\0') || n == i)
+		return (str1[i - 1] - str2[i - 1]);
+	return (str1[i] - str2[i]);
 }

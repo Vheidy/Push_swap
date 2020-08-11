@@ -3,37 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rtacos <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vheidy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/16 13:18:14 by rtacos            #+#    #+#             */
-/*   Updated: 2019/09/18 19:06:25 by rtacos           ###   ########.fr       */
+/*   Created: 2019/09/13 15:04:28 by vheidy            #+#    #+#             */
+/*   Updated: 2019/09/18 16:20:37 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_itoa(int n, int count_zero)
+static int		ft_len(int n)
 {
-	char			*str;
-	size_t			max;
-	unsigned int	i;
+	int len;
 
-	max = ft_intlen(n) + count_zero + (n < 0 ? 1 : 0);
+	len = 0;
 	if (n < 0)
-		i = (unsigned int)(n * (-1));
-	else
-		i = (unsigned int)(n);
-	if (!(str = ft_strnew(max)))
-		return (NULL);
-	while (i >= 10)
+		len++;
+	while (n >= 10 || n <= -10)
 	{
-		str[--max] = (i % 10) + 48;
-		i /= 10;
+		len++;
+		n = n / 10;
 	}
-	str[--max] = (i % 10) + 48;
-	while (count_zero--)
-		str[--max] = '0';
+	len++;
+	return (len);
+}
+
+static char		ft_iter(int n)
+{
+	char i;
+
+	if (n >= 0)
+		i = n % 10 + '0';
 	if (n < 0)
-		str[0] = '-';
-	return (str);
+		i = n % 10 * -1 + '0';
+	return (i);
+}
+
+char			*ft_itoa(int n)
+{
+	char	*s2;
+	int		len;
+
+	len = ft_len(n);
+	s2 = (char *)malloc(sizeof(char) * (len + 1));
+	if (s2 == NULL)
+		return (0);
+	s2[len--] = '\0';
+	while (n >= 10 || n <= -10)
+	{
+		s2[len--] = ft_iter(n);
+		n = n / 10;
+	}
+	s2[len] = ft_iter(n);
+	if (n < 0)
+		s2[len - 1] = '-';
+	return (s2);
 }

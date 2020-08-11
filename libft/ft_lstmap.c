@@ -3,33 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rtacos <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vheidy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/18 19:49:01 by rtacos            #+#    #+#             */
-/*   Updated: 2019/09/18 23:26:31 by rtacos           ###   ########.fr       */
+/*   Created: 2019/09/16 22:15:14 by vheidy            #+#    #+#             */
+/*   Updated: 2019/09/18 16:30:30 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
+static void	ft_free(t_list *list)
+{
+	if (list->next)
+		ft_free(list->next);
+	free(list->content);
+	free(list);
+	list = NULL;
+}
+
+t_list		*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
 	t_list *list;
-	t_list *tmp;
+	t_list *new;
+	t_list *lol;
 
-	if (!(lst && f))
+	if (!lst || !(f))
 		return (NULL);
-	tmp = f(lst);
-	list = tmp;
+	list = f(lst);
+	new = ft_lstnew(list->content, list->content_size);
+	if (!new)
+		return (NULL);
+	lol = new;
 	while (lst->next)
 	{
 		lst = lst->next;
-		if (!(tmp->next = f(lst)))
+		list = f(lst);
+		lol->next = ft_lstnew(list->content, list->content_size);
+		if (!(lol->next))
 		{
-			ft_dellst(&list);
+			ft_free(new);
 			return (NULL);
 		}
-		tmp = tmp->next;
+		lol = lol->next;
 	}
-	return (list);
+	return (new);
 }

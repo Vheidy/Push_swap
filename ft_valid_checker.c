@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 17:59:37 by vheidy            #+#    #+#             */
-/*   Updated: 2020/08/06 19:11:29 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/08/11 19:41:09 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,21 @@
 /*
 В этот файл закинуть функцию проверки на отсортированность
 */
+
+int		ft_check_order(t_stack *st)
+{
+	int i;
+
+	i = 0;
+	if (st->size_B)
+		return 0;
+	while (i + 1 < st->size_A) {
+		if (st->stack_A[i] > st->stack_A[i + 1])
+			return 0;
+		i++;
+	}
+	return 1;
+}
 
 int		ft_check_repeat(int *stack, int ac)
 {
@@ -54,7 +69,9 @@ int		*ft_valid_digit(int ac, char **av)
 {
 	int *tmp;
 	long long int ch;
+	int i;
 
+	i = ac;
 	if (!(tmp = malloc(sizeof(int) * ac)))
 		return NULL;
 	while (ac > 0)
@@ -65,7 +82,7 @@ int		*ft_valid_digit(int ac, char **av)
 		tmp[ac - 1] = ch;
 		ac--;
 	}
-	if (!ft_check_repeat(tmp, ac))
+	if (!ft_check_repeat(tmp, i))
 		error();
 	return tmp;
 }
