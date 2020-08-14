@@ -6,46 +6,45 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 17:38:31 by vheidy            #+#    #+#             */
-/*   Updated: 2019/09/16 22:01:39 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/08/12 08:19:04 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_check(int a, int b)
+static int	space(char c)
 {
-	if (a > 19 && b == -1)
-		return (0);
-	if (a > 19 && b == 1)
-		return (-1);
-	return (1);
+	if (c == ' ' || c == '\n' || c == '\f' || c == '\v'
+			|| c == '\t' || c == '\r')
+		return (1);
+	return (0);
 }
 
-int				ft_atoi(const char *str)
+int			ft_atoi(const char *s)
 {
-	int i;
-	int b;
-	int a;
-	int k;
+	int				fl;
+	long long int	at;
+	long long int	r;
+	int				i;
 
+	fl = 1;
+	at = 0;
 	i = 0;
-	b = 1;
-	k = 0;
-	a = 0;
-	while (str[i] == '\t' || str[i] == ' ' || str[i] == '\r' || str[i] == '\n'
-			|| str[i] == '\v' || str[i] == '\f')
+	while (space(s[i]) == 1)
 		i++;
-	if (str[i] == '-')
-		b = 1 * -1;
-	if (str[i] == '+' || str[i] == '-')
+	if (s[i] == '-')
+		fl = -1;
+	if (s[i] == '-' || s[i] == '+')
 		i++;
-	while (str[i] >= '0' && str[i] <= '9')
+	while (ft_isdigit(s[i]) == 1)
 	{
-		k = k * 10 + str[i] - '0';
+		r = at;
+		at = at * 10 + (s[i] - '0');
+		if (r != (at / 10) && fl == 1)
+			return (-1);
+		if (r != (at / 10) && fl == -1)
+			return (0);
 		i++;
-		a++;
 	}
-	if (ft_check(a, b) == 0 || ft_check(a, b) == -1)
-		return (ft_check(a, b));
-	return (k * b);
+	return (at * fl);
 }

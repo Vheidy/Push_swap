@@ -6,11 +6,11 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 17:57:42 by vheidy            #+#    #+#             */
-/*   Updated: 2020/08/11 19:34:58 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/08/12 08:31:53 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "checker_push_swap.h"
 
 void	ft_swap(int **stack, int size, int *fl) // принимает size полный
 {
@@ -105,5 +105,6 @@ int	ft_choose_command(char *str, t_stack *st)
 		ft_reverse_rotate(&st->stack_B, (st->size_B - 1), &st->flag);
 	if (!st->flag)
 		return 0;
+	free(str);
 	return 1;
 }

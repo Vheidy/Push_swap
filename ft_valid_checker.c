@@ -6,15 +6,11 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 17:59:37 by vheidy            #+#    #+#             */
-/*   Updated: 2020/08/11 19:41:09 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/08/12 08:47:23 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
-
-/*
-В этот файл закинуть функцию проверки на отсортированность
-*/
+#include "checker_push_swap.h"
 
 int		ft_check_order(t_stack *st)
 {
@@ -50,18 +46,24 @@ int		ft_check_repeat(int *stack, int ac)
 	return 1;
 }
 
+char	*ft_check_val(char *str) {
+	while (*str == '0')
+		str++;
+	return str;
+}
+
 int		ft_check_digit(char *str)
 {
 	int i;
 	
 	i = 0;
-	if (ft_strlen(str) > 12)
-		return 0;
 	if (str[i] == '-')
 		i++;
 	while (str[i])
 		if (ft_isdigit(str[i++]) == 0)
 			return 0;
+	if (ft_strlen(ft_check_val(str)) > 12)
+		return 0;
 	return 1;
 }
 
