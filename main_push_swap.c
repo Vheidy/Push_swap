@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/12 08:07:21 by vheidy            #+#    #+#             */
-/*   Updated: 2020/08/16 18:24:23 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/08/19 19:49:53 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,57 +20,88 @@
 
 // 2 1 3 6 5 8
 
-int		ft_len_less(int *stack, int size, int index)
+// int		ft_len_less(int *stack, int size, int index)
+// {
+// 	int i;
+// 	int count;
+
+// 	i = 0;
+// 	count = 0;
+// 	while (i < size) {
+// 		if (stack[i] < stack[index])
+// 			count++;
+// 		i++;
+// 	}
+// 	return count;
+// }
+
+// int		ft_len_larg(int *stack, int size, int index)
+// {
+// 	int i;
+// 	int count;
+
+// 	i = 0;
+// 	count = 0;
+// 	while (i < size) {
+// 		if (stack[i] > stack[index])
+// 			count++;
+// 		i++;
+// 	}
+// 	return count;
+// }
+
+// int		*ft_quick_sort(int *stack, int size)
+// {
+// 	int main_index;
+// 	int *less;
+// 	int *larg;
+
+// 	int i = 0;
+// 	main_index = size / 2;
+// 	less = malloc(sizeof(int) * ft_len_less(stack, size, main_index));
+// 	larg = malloc(sizeof(int) * ft_len_larg(stack, size, main_index));
+// 	while (i < size) {
+// 		if (stack[i] < stack[main_index])
+// 		i++;
+// 	}
+// }
+void	ft_quick_sort(int *stack, int *left, int *right) // принимает size - 1
 {
-	int i;
-	int count;
+	int *pr;
+	int *left_h = left;
+	int *right_h = right;
+	int *tmp;
 
-	i = 0;
-	count = 0;
-	while (i < size) {
-		if (stack[i] < stack[index])
-			count++;
-		i++;
+	// if ((size + 1) < 2)
+	// 	return stack;
+	pr = stack;
+	while (left < right) {
+		while (*left < *pr)
+			left++;
+		while (*right > *pr)
+			right++;
+		if (left < right) {
+			*tmp = *left;
+			*left = *right;
+			*right = *tmp;
+			left++;
+			right++;
+		}
 	}
-	return count;
-}
-
-int		ft_len_larg(int *stack, int size, int index)
-{
-	int i;
-	int count;
-
-	i = 0;
-	count = 0;
-	while (i < size) {
-		if (stack[i] > stack[index])
-			count++;
-		i++;
-	}
-	return count;
-}
-
-int		*ft_quick_sort(int *stack, int size)
-{
-	int main_index;
-	int *less;
-	int *larg;
-
-	int i = 0;
-	main_index = size / 2;
-	less = malloc(sizeof(int) * ft_len_less(stack, size, main_index));
-	larg = malloc(sizeof(int) * ft_len_larg(stack, size, main_index));
-	while (i < size) {
-		if (stack[i] < stack[main_index])
-		i++;
-	}
+	*tmp = *pr;
+	*pr = *right;
+	*right = *pr;
+	left = left_h;
+	right = right_h;
+	if (left < pr)
+		ft_quick_sort(stack, (pr - left - 1), left, (pr - 1));
+	if (right > pr)
+		ft_quick_sort(stack, (right - pr), (pr + 1), right);
 }
 
 int		*ft_sorting_stack(int *stack, int size)
 {
-	int	*sort;
-	
-	sort = ft_quick_sort(stack, size);
+	ft_quick_sort(stack, (stack + 1), (stack + size - 1));
 }
 
 int		main(int ac, char **av)
