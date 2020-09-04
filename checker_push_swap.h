@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 14:29:48 by vheidy            #+#    #+#             */
-/*   Updated: 2020/08/12 08:16:44 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/09/03 15:44:16 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ typedef struct		s_stack {
 	int				flag;
 }					t_stack;
 
+int		ft_check_order(t_stack *st, int fl);
 int		ft_choose_command(char *str, t_stack *st);
 int		*ft_valid_digit(int ac, char **av);
 void	error();
-int		ft_check_order(t_stack *st);
 int		ft_create_struct(t_stack *st, int ac);
 
 #endif

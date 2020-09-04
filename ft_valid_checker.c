@@ -6,26 +6,13 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 17:59:37 by vheidy            #+#    #+#             */
-/*   Updated: 2020/08/12 08:47:23 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/09/03 13:57:51 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker_push_swap.h"
 
-int		ft_check_order(t_stack *st)
-{
-	int i;
 
-	i = 0;
-	if (st->size_B)
-		return 0;
-	while (i + 1 < st->size_A) {
-		if (st->stack_A[i] > st->stack_A[i + 1])
-			return 0;
-		i++;
-	}
-	return 1;
-}
 
 int		ft_check_repeat(int *stack, int ac)
 {

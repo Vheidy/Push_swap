@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 11:57:19 by vheidy            #+#    #+#             */
-/*   Updated: 2020/08/12 08:48:49 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/09/03 15:42:54 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		ft_read_command(t_stack *st)
 		st->flag = 0;
 	}
 	// free(buf);
-	if (ft_check_order(st))
+	if (ft_check_order(st, 1))
 		write(1, "OK\n", 3);
 	else
 		write(1, "KO\n", 3);
