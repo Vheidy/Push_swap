@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 14:29:48 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/03 15:44:16 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/09/21 19:20:07 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ typedef struct		s_stack {
 	int				flag;
 }					t_stack;
 
+typedef struct		s_chunk
+{
+	int				*arr;
+	int				size;
+}					t_chunk;
+
+void	ft_push(int **from, int **where, int *size_fr, int *size_wr);
 int		ft_check_order(t_stack *st, int fl);
 int		ft_choose_command(char *str, t_stack *st);
 int		*ft_valid_digit(int ac, char **av);
