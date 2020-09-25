@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/12 08:07:21 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/21 19:32:45 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/09/25 20:29:04 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,58 +22,58 @@
 Фиксить в ех
 */
 
-void	ft_swap_pointer(int *first, int *second)
-{
-	int	tmp;
+// void	ft_swap_pointer(int *first, int *second)
+// {
+// 	int	tmp;
 
-	tmp = *first;
-	*first = *second;
-	*second = tmp;
-}
+// 	tmp = *first;
+// 	*first = *second;
+// 	*second = tmp;
+// }
 
-void	ft_quick_sort(int *begin, int *left, int *right)
-{
-	int	tmp;
-	int	*tmp_right;
+// void	ft_quick_sort(int *begin, int *left, int *right)
+// {
+// 	int	tmp;
+// 	int	*tmp_right;
 
-	tmp_right = right;
-	while (left < right)
-	{
-		while (*left < *begin && left < tmp_right)
-			left++;
-		while (*right > *begin && right > begin)
-			right--;
-		if (left < right)
-			ft_swap_pointer(left, right);
-	}
-	if ((left != right) || (left == right && *begin > *right))
-		ft_swap_pointer(begin, right);
-	if (right - begin > 1)
-		ft_quick_sort(begin, (begin + 1), (right - 1));
-	if (tmp_right - right > 1)
-		ft_quick_sort(left, (left + 1), tmp_right);
-}
+// 	tmp_right = right;
+// 	while (left < right)
+// 	{
+// 		while (*left < *begin && left < tmp_right)
+// 			left++;
+// 		while (*right > *begin && right > begin)
+// 			right--;
+// 		if (left < right)
+// 			ft_swap_pointer(left, right);
+// 	}
+// 	if ((left != right) || (left == right && *begin > *right))
+// 		ft_swap_pointer(begin, right);
+// 	if (right - begin > 1)
+// 		ft_quick_sort(begin, (begin + 1), (right - 1));
+// 	if (tmp_right - right > 1)
+// 		ft_quick_sort(left, (left + 1), tmp_right);
+// }
 
-int		*ft_sorting_stack(int *stack, int size)
-{
-	int	*sort;
-	int	i;
+// int		*ft_sorting_stack(int *stack, int size)
+// {
+// 	int	*sort;
+// 	int	i;
 
-	i = -1;
-	sort = malloc(sizeof(int) * size);
-	while (++i < size)
-		sort[i] = stack[i];
-	if (size > 1)
-		ft_quick_sort(&sort[0], &sort[1], &sort[size - 1]);
-	return (sort);
-}
+// 	i = -1;
+// 	sort = malloc(sizeof(int) * size);
+// 	while (++i < size)
+// 		sort[i] = stack[i];
+// 	if (size > 1)
+// 		ft_quick_sort(&sort[0], &sort[1], &sort[size - 1]);
+// 	return (sort);
+// }
 
-void	ft_print_command(char *str, t_stack *st)
-{
-	ft_putstr(str);
-	write(1, "\n", 1);
-	ft_choose_command(str, st);
-}
+// void	ft_print_command(char *str, t_stack *st)
+// {
+// 	ft_putstr(str);
+// 	write(1, "\n", 1);
+// 	ft_choose_command(str, st);
+// }
 
 // int		find_mid(int begin, int end)
 // {
@@ -271,21 +271,138 @@ void	ft_print_command(char *str, t_stack *st)
 // 		ft_print_command(ft_strdup("pa"), st);
 // }
 
+void	ft_push_A_B(t_stack *st, t_lst *A, t_lst *B, int fl)
+{
+	int mid;
+	int *sort;
+	t_lst *next_lst;
+	int count;
+
+	mid = A->ch->size / 2;
+	count = 0;
+	if (!(next_lst = ft_new_list(0 , B)))
+		error();
+	B->next = next_lst;
+	sort = ft_sorting_stack(A->ch->arr, A->ch->size);
+	while (B->ch->size < mid && !ft_check_order(A->ch, A->ch, 0))
+	{
+		if (st->A->arr[0] < sort[mid])
+				ft_print_command(ft_strdup("pb"), st, A, B);
+		else if (st->A->arr[st->A->size - 1] < sort[mid])
+			ft_print_command(ft_strdup("rra"), st, A, B);
+		else
+		{
+			ft_print_command(ft_strdup("ra"), st, A, B);
+			count++;
+		}
+	}
+	if (A->before)
+		while (count--)
+			ft_print_command(ft_strdup("rra"), st, A, B);
+	if (st->A->size > 2 && !ft_check_order(A->ch, A->ch, 0))
+		ft_push_A_B(st, A, next_lst, fl);
+	if (st->A->size == 2 && !ft_check_order(A->ch, A->ch, 0))
+		ft_print_command(ft_strdup("sa"), st, A, B);
+}
+
+void	ft_push_B_A(t_stack *st, t_lst *B, t_lst *A, int fl)
+{
+	int mid;
+	int count;
+	int *sort;
+	t_lst *next_list;
+	int size_new;
+
+	mid = B->ch->size / 2;
+	size_new = (B->ch->size % 2) ? mid : mid - 1;
+	count = 0;
+	if (!(next_list = ft_new_list(0 , A)))
+		error();
+	A->next = next_list;
+	sort = ft_sorting_stack(B->ch->arr, B->ch->size);
+	if (B->ch->size > 2 && !ft_check_back_order(B->ch))
+	{
+		while (A->ch->size < size_new && !ft_check_back_order(B->ch))
+		{
+			if (st->B->arr[0] > sort[mid])
+				ft_print_command(ft_strdup("pa"), st, A, B);
+			else if (st->B->arr[st->B->size - 1] > sort[mid])
+				ft_print_command(ft_strdup("rrb"), st, A, B);
+			else
+			{
+				ft_print_command(ft_strdup("rb"), st, A, B);
+				count++;
+			}
+		}
+		if (B->before)
+			while (count--)
+				ft_print_command(ft_strdup("rrb"), st, A, B);
+	}
+	else if (!ft_check_back_order(B->ch))
+		ft_print_command(ft_strdup("sb"), st, A, B);
+	// printf("%d\n", B->ch->size);
+	while (B->ch->size && ft_check_back_order(B->ch))
+		ft_print_command(ft_strdup("pa"), st, A, B);
+	if (!ft_check_order(A->ch, B->ch, 0))
+		ft_push_A_B(st, A, B, 1);
+	if (st->B->size)
+	{
+		if (B->before)
+			ft_push_B_A(st, B->before, next_list, 1);
+		else 
+			ft_push_B_A(st, B, next_list, 1);
+	}
+}
+
+t_lst	*ft_get_end_lst(t_lst *begin)
+{
+	t_lst *tmp;
+
+	tmp = begin;
+	while (tmp->next)
+		tmp = tmp->next;
+	return tmp;
+}
+
+void	ft_algorithm(t_stack *st, t_lst *A)
+{
+	t_lst *B_begin;
+	t_lst *ch;
+
+	if (!(B_begin = ft_new_list(0, 0)))
+		error();
+	if (A->ch->size > 2 && !ft_check_order(A->ch, A->ch, 0))
+		ft_push_A_B(st, A, B_begin, 0);
+	// printf("--1--\n");
+	ch = ft_get_end_lst(B_begin);
+	ft_push_B_A(st, ch, A, 0);
+}
+
+void	ft_changes(t_stack *st)
+{
+	t_lst	*ch_A_begin;
+	int i;
+
+	i = -1;
+	if (!(ch_A_begin = ft_new_list(st->A->size, 0)))
+		error();
+	while (++i < st->A->size) {
+			ch_A_begin->ch->arr[i] = st->A->arr[i];
+	}
+	ft_algorithm(st, ch_A_begin);
+}
+
 int		main(int ac, char **av)
 {
-	t_stack	st;
-	t_stack	tmp;
+	t_stack	*st;
 
 	if (ac == 1)
 		return (0);
 	// int pos = ft_find_mid(0, st.size_A);
-	if (!ft_create_struct(&st, (ac - 1)))
+	if (!(st = ft_create_stack(ac - 1)))
 		error();
-	st.stack_A = ft_valid_digit((ac - 1), av);
-	if (!ft_create_struct(&tmp, ac - 1))
-		error();
-	tmp.stack_A = st.stack_A; // возможно надо через копирование
-	tmp.flag = 0;
-	ft_changes(&st, &tmp);
+	st->A->arr = ft_valid_digit((ac - 1), av);
+	
+	ft_changes(st);
 	return (0);
 }

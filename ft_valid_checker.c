@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 17:59:37 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/03 13:57:51 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/09/25 20:31:45 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int		*ft_valid_digit(int ac, char **av)
 	while (ac > 0)
 	{
 		ch = ft_atoi(av[ac]);
+		printf("%d\n", ft_check_digit(av[ac]));
 		if (!ft_check_digit(av[ac]) || ch > 2147483647 || ch < (-2147483647))
 			error();
 		tmp[ac - 1] = ch;

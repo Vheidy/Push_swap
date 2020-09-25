@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 11:57:19 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/03 15:42:54 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/09/25 20:27:03 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_crop(char *buf, t_stack *st) {
 	char *str;
 
 	// str = *buf;
-	str = malloc(sizeof(char) * (st->size_A - 1));
+	str = malloc(sizeof(char) * (st->A->size - 1));
 	begin = str;
 	while (*buf != '\n' && *buf != '\0')
 		*str++ = *buf++;
@@ -35,33 +35,30 @@ int		ft_read_command(t_stack *st)
 	char *buf;
 
 	while ((red = get_next_line(0, &buf))) {
-		if (!(ft_choose_command(ft_crop(buf, st), st))) // выполнение команды и проверка ее на валидность
+		if (!(ft_choose_command(ft_crop(buf, st), st->A, st->B, 0))) // выполнение команды и проверка ее на валидность
 			error();
 		free(buf);
-		st->flag = 0;
 	}
 	// free(buf);
-	if (ft_check_order(st, 1))
+	if (ft_check_order(st->A, st->B, 1))
 		write(1, "OK\n", 3);
 	else
 		write(1, "KO\n", 3);
 	return 0;
 }
 
-
-
 int		main(int ac, char **av)
 {
-	t_stack st;
-	int i = 0;
+	t_stack	*st;
 
 	if (ac == 1)
-		return 0;
-	if (!ft_create_struct(&st, (ac - 1)))
+		return (0);
+	if (!(st = ft_create_stack(ac - 1)))
 		error();
-	st.stack_A = ft_valid_digit((ac - 1), av);
-	ft_read_command(&st);
-	free(st.stack_A);
-	free(st.stack_B);
+	st->A->arr = ft_valid_digit((ac - 1), av);
+	ft_read_command(st);
+	free(st->A->arr);
+	free(st->B->arr);
 	return 0;
 }
+
