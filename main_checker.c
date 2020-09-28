@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 11:57:19 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/25 20:27:03 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/09/28 16:44:32 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ char	*ft_crop(char *buf, t_stack *st) {
 int		ft_read_command(t_stack *st)
 {
 	int red;
-	char *command;
 	char *buf;
 
 	while ((red = get_next_line(0, &buf))) {
@@ -50,12 +49,14 @@ int		ft_read_command(t_stack *st)
 int		main(int ac, char **av)
 {
 	t_stack	*st;
+	int count;
 
 	if (ac == 1)
 		return (0);
-	if (!(st = ft_create_stack(ac - 1)))
+	count = ft_count_digit(av, ac);
+	if (!(st = ft_create_stack(count)))
 		error();
-	st->A->arr = ft_valid_digit((ac - 1), av);
+	st->A->arr = ft_valid_digit((ac - 1), count, av);
 	ft_read_command(st);
 	free(st->A->arr);
 	free(st->B->arr);

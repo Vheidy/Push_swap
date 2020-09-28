@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/12 08:14:14 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/25 18:52:11 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/09/28 18:48:38 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,25 @@ int		ft_create_chunk(t_chunk *st, int ac)
 		return 0;
 	st->size = ac;
 	return 1;
+}
+
+
+int		ft_count_digit(char **av, int ac)
+{
+	int i;
+	int count;
+
+	count = 0;
+	while (--ac)
+	{
+		i = -1;
+		while (av[ac][++i])
+			if ((ft_isdigit(av[ac][i]) && i == 0) \
+			|| (av[ac][i] == ' ' && ft_isdigit(av[ac][i + 1])) || \
+			(av[ac][i] == '-' && i > 0 && av[ac][i - 1] == ' ' && ft_isdigit(av[ac][i + 1])))
+				count++;
+	}
+	return count;
 }
 
 t_stack	*ft_create_stack(int ac)
@@ -45,12 +64,16 @@ t_lst		*ft_new_list(int content_size, t_lst *before)
 			return NULL;
 	list->ch->size = content_size;
 	list->next = NULL;
-	if (!(before))
-		list->before = NULL;
-	else
-		list->before = before;
+	list->before = before;
 	return (list);
 }
+
+// void	ft_dellst(t_lst *list)
+// {
+// 	free(list->ch->arr);
+// 	list = list->before;
+// 	list->next = NULL;
+// }
 
 int	ft_check_back_order(t_chunk *tmp_st)
 {
@@ -88,7 +111,6 @@ void	ft_swap_pointer(int *first, int *second)
 
 void	ft_quick_sort(int *begin, int *left, int *right)
 {
-	int	tmp;
 	int	*tmp_right;
 
 	tmp_right = right;

@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 14:29:48 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/25 18:52:22 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/09/28 18:46:44 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct		s_lst
 	struct s_lst	*before;
 }					t_lst;
 
+void	ft_dellst(t_lst *list);
 int		ft_check_back_order(t_chunk *tmp_st);
 t_stack	*ft_create_stack(int ac);
 t_lst	*ft_new_list(int content_size, t_lst *before);
@@ -55,8 +56,9 @@ void	ft_push(int **from, int **where, int *size_fr, int *size_wr);
 int		ft_check_order(t_chunk *A, t_chunk *B, int fl);
 int		ft_choose_command(char *str, t_chunk *stack_A, t_chunk *stack_B, int flag);
 // int		ft_choose_command(char *str, t_stack *st);
-int		*ft_valid_digit(int ac, char **av);
+int		*ft_valid_digit(int ac, int count, char **av);
 void	error();
 int		ft_create_struct(t_stack *st, int ac);
+int		ft_count_digit(char **av, int ac);
 
 #endif
