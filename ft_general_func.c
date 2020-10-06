@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/12 08:14:14 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/28 18:48:38 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/06 17:47:33 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int		ft_count_digit(char **av, int ac)
 	{
 		i = -1;
 		while (av[ac][++i])
-			if ((ft_isdigit(av[ac][i]) && i == 0) \
+			if ((ft_isdigit(av[ac][i]) && i == 0) ||\
+			(i == 0 && av[ac][i] == '-' && ft_isdigit(av[ac][i + 1]))
 			|| (av[ac][i] == ' ' && ft_isdigit(av[ac][i + 1])) || \
 			(av[ac][i] == '-' && i > 0 && av[ac][i - 1] == ' ' && ft_isdigit(av[ac][i + 1])))
 				count++;
@@ -43,13 +44,14 @@ t_stack	*ft_create_stack(int ac)
 {
 	t_stack *st;
 
-
 	if (!(st = (t_stack *)malloc(sizeof(t_stack))) || !(st->A = (t_chunk *)malloc(sizeof(t_chunk))) || !(st->B = (t_chunk *)malloc(sizeof(t_chunk))))
 		return NULL;
 	if (!ft_create_chunk(st->A, ac) || !ft_create_chunk(st->B, 0))
 		return NULL;
 	st->A->size = ac;
 	st->B->size = 0;
+	st->fl_v = 0;
+	st->op = A;
 	return st;
 }
 
@@ -89,15 +91,79 @@ int	ft_check_back_order(t_chunk *tmp_st)
 	return 1;
 }
 
-void	ft_print_command(char *str, t_stack *st, t_lst *A, t_lst *B)
+int		ft_int_len(int elem)
 {
-	char *tmp;
+	int len;
 
-	tmp = ft_strdup(str);
+	len = (elem < 0) ? 1 : 0;
+	elem = len ? -elem : elem;
+	while (elem / 10 > 0){
+		elem /= 10;
+		len++;
+	}
+	len++;
+	return len;
+}
+
+void	ft_print_part(int elem, int fl)
+{
+	int space;
+
+	space = 10;
+	write (1, "|", 1);
+	if (!fl)
+	{
+		ft_putnbr(elem);
+		while (space-- - ft_int_len(elem))
+			write (1, " ", 1);
+	}
+	else
+	{
+		while (space--)
+			write (1, " ", 1);
+	}
+	write (1, "|", 1);
+}
+
+void	ft_print_command(char *str, t_stack *st)
+{
+	int end;
+	int i;
+	int space;
+
+	i = 0;
+	space = 11;
 	ft_putstr(str);
 	write(1, "\n", 1);
-	if (!ft_choose_command(str, A->ch, B->ch, 0) || !ft_choose_command(tmp, st->A, st->B, 0))
+	if (!ft_choose_command(str, st->A, st->B, 0))
 		error();
+	end = (st->A->size > st->B->size) ? st->A->size : st->B->size;
+	if (st->fl_v)
+	{
+		write(1, "------A-----------B------\n", 26);
+		while (i < end){
+			if (i < st->A->size && i < st->B->size)
+			{
+				ft_print_part(st->A->arr[i], 0);
+				ft_print_part(st->B->arr[i], 0);
+				write(1, "\n", 1);
+			}
+			else if (i < st->A->size)
+			{
+				ft_print_part(st->A->arr[i], 0);
+				ft_print_part(0, 1);
+				write(1, "\n", 1);
+			}
+			else if (i < st->B->size)
+			{
+				ft_print_part(0, 1);
+				ft_print_part(st->B->arr[i], 0);
+				write(1, "\n", 1);
+			}
+			i++;
+		}
+		write(1, "-------------------------\n", 26);
+	}
 }
 
 void	ft_swap_pointer(int *first, int *second)

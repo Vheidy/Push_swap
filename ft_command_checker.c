@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 17:57:42 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/25 17:56:05 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/06 18:22:13 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,5 @@ int	ft_choose_command(char *str, t_chunk *stack_A, t_chunk *stack_B, int flag)
 	if (!flag)
 		return 0;
 	free(str);
-	// printf("-ok-\n");
 	return 1;
 }

@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 17:59:37 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/28 16:29:59 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/04 17:33:11 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,15 @@ int		ft_check_digit(char *str)
 	
 	i = -1;
 	fl = 0;
-	// if (str[i] == '-')
-	// 	i++;
 	while (str[++i] != '\0')
 	{
-		if (!ft_isdigit(str[i]) && str[i] != ' ' && str[i] != '-')
+		if (!ft_isdigit(str[i]) && str[i] != ' ' && !(str[i] == '-' && ft_isdigit(str[i + 1])))
 			return 0;
 		if (str[i] == ' ' && ft_isdigit(str[i + 1]))
 			fl = 1;
-		// printf("%d\n", fl);
-		// i++;
 	}
 	if (fl)
 		return 2;
-	// printf("--ok--\n");
 	if (ft_strlen(ft_check_val(str)) > 12)
 		return 0;
 	return 1;
@@ -85,18 +80,22 @@ void	ft_read_string(int *tmp, int ac, char **av, int *count)
 	}
 }
 
-int		*ft_valid_digit(int ac, int count, char **av)
+int		*ft_valid_digit(int ac, int count, char **av, int fl)
 {
 	int *tmp;
 	long long int ch;
 	int i;
+	int end;
 
 	i = count;
+	end = (fl) ? 1 : 0;
 	if (!(tmp = malloc(sizeof(int) * count)))
 		return NULL;
-	while (--count >= 0)
+	while (--ac > end)
 	{
+		count--;
 		ch = ft_atoi(av[ac]);
+		// printf("%s\n", av[ac]);
 		if (!ft_check_digit(av[ac]) || ch > 2147483647 || ch < (-2147483647))
 			error();
 		if (ft_check_digit(av[ac]) == 2){
@@ -105,7 +104,7 @@ int		*ft_valid_digit(int ac, int count, char **av)
 		else{
 			tmp[count] = ch;
 		}
-		ac--;
+		// ac--;
 	}
 	if (!ft_check_repeat(tmp, i))
 		error();

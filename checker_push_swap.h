@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 14:29:48 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/28 18:46:44 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/05 19:59:21 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@
 // 	int				size_B;
 // 	int				flag;
 // }					t_stack;
+
+enum stack {
+	A,
+	B
+};
+
 typedef struct		s_chunk
 {
 	int				*arr;
@@ -35,6 +41,8 @@ typedef struct		s_stack
 {
 	t_chunk			*A;
 	t_chunk			*B;
+	int				fl_v;
+	enum stack		op;
 }					t_stack;
 
 
@@ -50,13 +58,13 @@ void	ft_dellst(t_lst *list);
 int		ft_check_back_order(t_chunk *tmp_st);
 t_stack	*ft_create_stack(int ac);
 t_lst	*ft_new_list(int content_size, t_lst *before);
-void	ft_print_command(char *str, t_stack *st, t_lst *A, t_lst *B);
+void	ft_print_command(char *str, t_stack *st);
 int		*ft_sorting_stack(int *stack, int size);
 void	ft_push(int **from, int **where, int *size_fr, int *size_wr);
 int		ft_check_order(t_chunk *A, t_chunk *B, int fl);
 int		ft_choose_command(char *str, t_chunk *stack_A, t_chunk *stack_B, int flag);
 // int		ft_choose_command(char *str, t_stack *st);
-int		*ft_valid_digit(int ac, int count, char **av);
+int		*ft_valid_digit(int ac, int count, char **av, int fl);
 void	error();
 int		ft_create_struct(t_stack *st, int ac);
 int		ft_count_digit(char **av, int ac);

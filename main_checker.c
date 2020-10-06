@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 11:57:19 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/28 16:44:32 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/06 18:21:07 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 */
 
 
-char	*ft_crop(char *buf, t_stack *st) {
+char	*ft_crop(char *buf) {
 	char *begin;
 	char *str;
 
-	// str = *buf;
-	str = malloc(sizeof(char) * (st->A->size - 1));
+	str = malloc(sizeof(char) * ft_strlen(buf) + 1);
 	begin = str;
 	while (*buf != '\n' && *buf != '\0')
 		*str++ = *buf++;
@@ -34,11 +33,10 @@ int		ft_read_command(t_stack *st)
 	char *buf;
 
 	while ((red = get_next_line(0, &buf))) {
-		if (!(ft_choose_command(ft_crop(buf, st), st->A, st->B, 0))) // выполнение команды и проверка ее на валидность
+		if (!(ft_choose_command(ft_crop(buf), st->A, st->B, 0))) // выполнение команды и проверка ее на валидность
 			error();
 		free(buf);
 	}
-	// free(buf);
 	if (ft_check_order(st->A, st->B, 1))
 		write(1, "OK\n", 3);
 	else
@@ -56,7 +54,7 @@ int		main(int ac, char **av)
 	count = ft_count_digit(av, ac);
 	if (!(st = ft_create_stack(count)))
 		error();
-	st->A->arr = ft_valid_digit((ac - 1), count, av);
+	st->A->arr = ft_valid_digit(ac, count, av, st->fl_v);
 	ft_read_command(st);
 	free(st->A->arr);
 	free(st->B->arr);

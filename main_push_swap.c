@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/12 08:07:21 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/28 19:17:04 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/06 17:57:54 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,164 +271,381 @@
 // 		ft_print_command(ft_strdup("pa"), st);
 // }
 
-void	ft_push_A_B(t_stack *st, t_lst *A, t_lst *B)
-{
-	int mid;
-	int *sort;
-	t_lst *next_lst;
-	int count;
+// void	ft_push_A_B(t_stack *st, t_lst *A, t_lst *B)
+// {
+// 	int mid;
+// 	int *sort;
+// 	t_lst *next_lst;
+// 	int count;
 
-	mid = A->ch->size / 2;
-	count = 0;
-	if (!(next_lst = ft_new_list(0 , B)))
-		error();
-	B->next = next_lst;
-	sort = ft_sorting_stack(A->ch->arr, A->ch->size);
-	while (B->ch->size < mid && !ft_check_order(A->ch, A->ch, 0))
+// 	mid = A->ch->size / 2;
+// 	count = 0;
+// 	if (!(next_lst = ft_new_list(0 , B)))
+// 		error();
+// 	B->next = next_lst;
+// 	sort = ft_sorting_stack(A->ch->arr, A->ch->size);
+// 	if (A->ch->size > 2 && !ft_check_order(A->ch, A->ch, 0))
+// 	{
+// 		while (B->ch->size < mid)
+// 		{
+// 			// printf("Hi\n");
+// 			if (!A->before && ft_check_order(A->ch, A->ch, 0))
+// 				break ;
+// 			if (st->A->arr[0] < sort[mid])
+// 					ft_print_command(ft_strdup("pb"), st, A, B);
+// 			else if (st->A->arr[st->A->size - 1] < sort[mid])
+// 				ft_print_command(ft_strdup("rra"), st, A, B);
+// 			else
+// 			{
+// 				ft_print_command(ft_strdup("ra"), st, A, B);
+// 				count = (A->before) ? (count + 1) : 0;
+// 			}
+// 			// printf("Bye\n");
+// 			if (A->before)
+// 				while (count--)
+// 					ft_print_command(ft_strdup("rra"), st, A, B);
+// 		}
+// 	} else if (!ft_check_order(A->ch, A->ch, 0))
+// 		ft_print_command(ft_strdup("sa"), st, A, B);
+// 	if (st->A->size > 2 && !ft_check_order(A->ch, A->ch, 0)) {
+// 		printf("--A-next-A-B--\n");
+// 		ft_push_A_B(st, A, next_lst);
+// 	}
+// 	if (!next_lst->ch->size)
+// 	{
+// 		next_lst->before = NULL;
+// 		B->next = NULL;
+// 	}
+// }
+
+// void	ft_print_chunk(t_lst *begin)
+// {
+// 	t_lst *tmp;
+// 	// int i = 4;
+
+// 	tmp = begin;
+// 	int c = 0;
+// 	printf("--BEGIN--\n");
+// 	// printf("size = %d\n", tmp->ch->size);
+// 	while (c < tmp->ch->size)
+// 		printf("%d\n", tmp->ch->arr[c++]);
+// 	// tmp = tmp->before;
+// 	printf("--END--\n");
+// }
+
+// void	ft_push_B_A(t_stack *st, t_lst *B, t_lst *A)
+// {
+// 	int mid;
+// 	int count;
+// 	int *sort;
+// 	t_lst *next_list;
+// 	int size_new;
+
+// 	mid = B->ch->size / 2;
+// 	size_new = (B->ch->size % 2) ? mid : mid - 1;
+// 	count = 0;
+// 	if (!(next_list = ft_new_list(0 , A)))
+// 		error();
+// 	A->next = next_list;
+// 	sort = ft_sorting_stack(B->ch->arr, B->ch->size);
+// 	if (B->ch->size > 2 && !ft_check_back_order(B->ch))
+// 	{
+// 		while (A->ch->size < size_new && !ft_check_back_order(B->ch))
+// 		{
+// 			if (st->B->arr[0] > sort[mid])
+// 				ft_print_command(ft_strdup("pa"), st, A, B);
+// 			else if (st->B->arr[st->B->size - 1] > sort[mid])
+// 				ft_print_command(ft_strdup("rrb"), st, A, B);
+// 			else
+// 			{
+// 				ft_print_command(ft_strdup("rb"), st, A, B);
+// 				count++;
+// 			}
+// 		}
+// 		if (B->before)
+// 			while (count--)
+// 				ft_print_command(ft_strdup("rrb"), st, A, B);
+// 	}
+// 	else if (!ft_check_back_order(B->ch))
+// 		ft_print_command(ft_strdup("sb"), st, A, B);
+// 	// printf("%d\n", B->ch->size);
+// 	while (B->ch->size && ft_check_back_order(B->ch))
+// 		ft_print_command(ft_strdup("pa"), st, A, B);
+// 	if (!ft_check_order(A->ch, B->ch, 0))
+// 	{
+// 		if (!(next_list = ft_new_list(0 , B)))
+// 		error();
+// 		B->next = next_list;
+// 		printf("--B-next-A-B--\n");
+// 		ft_push_A_B(st, A, next_list);
+// 	}
+// 	if (st->B->size)
+// 	{
+// 		// printf("--A--\n");
+// 		// ft_print_chunk(A);
+// 		// printf("--B--\n");
+// 		// ft_print_chunk(B);
+// 		printf("--B-next-B-A--\n");
+// 		if (B->before){
+// 			ft_push_B_A(st, B->before, next_list);
+// 		}
+// 		// else 
+// 		// 	ft_push_B_A(st, B, next_list);
+// 	}
+// }
+
+// t_lst	*ft_get_end_lst(t_lst *begin)
+// {
+// 	t_lst *tmp;
+
+// 	tmp = begin;
+// 	while (tmp->next)
+// 		tmp = tmp->next;
+// 	// if (!tmp->ch->size)
+// 	// 	ft_dellst(tmp);
+// 	return tmp;
+// }
+
+
+
+// void	ft_algorithm(t_stack *st, t_lst *A)
+// {
+// 	t_lst *B_begin;
+// 	t_lst *ch;
+
+// 	if (!(B_begin = ft_new_list(0, 0)))
+// 		error();
+// 	if (A->ch->size > 2 && !ft_check_order(A->ch, A->ch, 0))
+// 		ft_push_A_B(st, A, B_begin);
+// 	ch = ft_get_end_lst(B_begin);
+// 	// ft_print_chunk(ch);
+// 	printf("--first-ok--\n");
+// 	ft_push_B_A(st, ch, A);
+// 	printf("--second-ok--\n");
+// }
+
+// void	ft_changes(t_stack *st)
+// {
+// 	t_lst	*ch_A_begin;
+// 	int i;
+
+// 	i = -1;
+// 	if (!(ch_A_begin = ft_new_list(st->A->size, 0)))
+// 		error();
+// 	while (++i < st->A->size) {
+// 			ch_A_begin->ch->arr[i] = st->A->arr[i];
+// 	}
+// 	ft_algorithm(st, ch_A_begin);
+// }
+
+void	ft_algo_three_num(t_stack *st)
+{
+	while (!ft_check_order(st->A, st->B, 0))
 	{
-		// printf("Hi\n");
-		if (st->A->arr[0] < sort[mid])
-				ft_print_command(ft_strdup("pb"), st, A, B);
-		else if (st->A->arr[st->A->size - 1] < sort[mid])
-			ft_print_command(ft_strdup("rra"), st, A, B);
-		else
-		{
-			ft_print_command(ft_strdup("ra"), st, A, B);
-			count++;
-		}
-	}
-	if (A->before)
-		while (count--)
-			ft_print_command(ft_strdup("rra"), st, A, B);
-	if (st->A->size > 2 && !ft_check_order(A->ch, A->ch, 0))
-		ft_push_A_B(st, A, next_lst);
-	if (st->A->size == 2 && !ft_check_order(A->ch, A->ch, 0))
-		ft_print_command(ft_strdup("sa"), st, A, B);
-	if (!next_lst->ch->size)
-	{
-		next_lst->before = NULL;
-		B->next = NULL;
+		if (st->A->arr[0] > st->A->arr[2])
+			ft_print_command(ft_strdup("ra"), st);
+		else if (st->A->arr[0] > st->A->arr[1])
+			ft_print_command(ft_strdup("sa"), st);
+		else 
+			ft_print_command(ft_strdup("rra"), st);
 	}
 }
 
-void	ft_print_chunk(t_lst *begin)
-{
-	t_lst *tmp;
-	// int i = 4;
+// возвращает позицию минимального из значений больших елемента в отсортированном стэке
 
-	tmp = begin;
-	int c = 0;
-	printf("--BEGIN--\n");
-	// printf("size = %d\n", tmp->ch->size);
-	while (c < tmp->ch->size)
-		printf("%d\n", tmp->ch->arr[c++]);
-	// tmp = tmp->before;
-	printf("--END--\n");
+int		ft_min_in_max(int elem, t_chunk *st)
+{
+	int i;
+	int *sort;
+
+	i = -1;
+	sort = ft_sorting_stack(st->arr, st->size);
+	while (++i < st->size)
+		if (sort[i] > elem)
+			return sort[i];
+	return 0;
 }
 
-void	ft_push_B_A(t_stack *st, t_lst *B, t_lst *A)
-{
-	int mid;
-	int count;
-	int *sort;
-	t_lst *next_list;
-	int size_new;
+// если флага нет то для А, если есть то для В
 
-	mid = B->ch->size / 2;
-	size_new = (B->ch->size % 2) ? mid : mid - 1;
-	count = 0;
-	if (!(next_list = ft_new_list(0 , A)))
-		error();
-	A->next = next_list;
-	sort = ft_sorting_stack(B->ch->arr, B->ch->size);
-	if (B->ch->size > 2 && !ft_check_back_order(B->ch))
-	{
-		while (A->ch->size < size_new && !ft_check_back_order(B->ch))
+void	ft_put_up(int elem, t_stack *st, int fl)
+{
+	int pos;
+	t_chunk *tmp;
+
+	pos = -1;
+	tmp = (fl) ? st->B : st->A;
+	// printf("SZIE: %d\n", tmp->size);
+	while (++pos < tmp->size)
+		if (tmp->arr[pos] == elem)
+			break;
+	if (pos <= tmp->size / 2)
+		while (pos--)
 		{
-			if (st->B->arr[0] > sort[mid])
-				ft_print_command(ft_strdup("pa"), st, A, B);
-			else if (st->B->arr[st->B->size - 1] > sort[mid])
-				ft_print_command(ft_strdup("rrb"), st, A, B);
+			if (!fl)
+				ft_print_command(ft_strdup("ra"), st);
 			else
+				ft_print_command(ft_strdup("rb"), st);
+		}
+	else
+		while (tmp->size - (pos++))
 			{
-				ft_print_command(ft_strdup("rb"), st, A, B);
-				count++;
+			if (!fl)
+				ft_print_command(ft_strdup("rra"), st);
+			else
+				ft_print_command(ft_strdup("rrb"), st);
+		}
+}
+
+// находит наименьшее значение которое больше елем и поднимает его вверх
+
+void	ft_find_place(int elem, t_stack *st, int f)
+{
+	int i;
+	int max_less;
+	int fl;
+	int *sort;
+	t_chunk *tmp;
+
+	i = -1;
+	fl = 0;
+	max_less = 0;
+	tmp = (!f) ? st->A : st->B;
+	while (++i < tmp->size)
+		if (tmp->arr[i] < elem) {
+			if (!fl){
+				max_less = tmp->arr[i];
+				fl = 1;
 			}
+			else if (fl && tmp->arr[i] > max_less)
+				max_less = tmp->arr[i];
 		}
-		if (B->before)
-			while (count--)
-				ft_print_command(ft_strdup("rrb"), st, A, B);
-	}
-	else if (!ft_check_back_order(B->ch))
-		ft_print_command(ft_strdup("sb"), st, A, B);
-	// printf("%d\n", B->ch->size);
-	while (B->ch->size && ft_check_back_order(B->ch))
-		ft_print_command(ft_strdup("pa"), st, A, B);
-	if (!ft_check_order(A->ch, B->ch, 0))
+	if (fl)
+		ft_put_up(max_less, st, f);
+	else
 	{
-		if (!(next_list = ft_new_list(0 , B)))
-		error();
-		B->next = next_list;
-		ft_push_A_B(st, A, next_list);
-	}
-	if (st->B->size)
-	{
-		printf("--A--\n");
-		ft_print_chunk(A);
-		printf("--B--\n");
-		ft_print_chunk(B);
-		printf("--next--\n");
-		if (B->before){
-			ft_push_B_A(st, B->before, next_list);
-		}
-		// else 
-		// 	ft_push_B_A(st, B, next_list);
+		sort = ft_sorting_stack(tmp->arr, tmp->size);
+		ft_put_up(sort[tmp->size - 1], st, f);
 	}
 }
 
-t_lst	*ft_get_end_lst(t_lst *begin)
-{
-	t_lst *tmp;
 
-	tmp = begin;
-	while (tmp->next)
-		tmp = tmp->next;
-	// if (!tmp->ch->size)
-	// 	ft_dellst(tmp);
-	return tmp;
+void	ft_min_up(t_stack *st, int pos)
+{
+	if (pos <= st->A->size / 2)
+		while (pos--)
+			ft_print_command(ft_strdup("ra"), st);
+	else
+		while (st->A->size - (pos++))
+			ft_print_command(ft_strdup("rra"), st);
 }
 
-
-
-void	ft_algorithm(t_stack *st, t_lst *A)
+int		ft_find_pos(int elem, t_chunk *st)
 {
-	t_lst *B_begin;
-	t_lst *ch;
+	int pos;
 
-	if (!(B_begin = ft_new_list(0, 0)))
-		error();
-	if (A->ch->size > 2 && !ft_check_order(A->ch, A->ch, 0))
-		ft_push_A_B(st, A, B_begin);
-	ch = ft_get_end_lst(B_begin);
-	// ft_print_chunk(ch);
-	printf("--first-ok--\n");
-	ft_push_B_A(st, ch, A);
+	pos = 0;
+	while (pos < st->size)
+	{
+		if (st->arr[pos] == elem)
+			return pos;
+		pos++;
+	}
+	return 0;
+}
+
+void	ft_algo_five_num(t_stack *st)
+{
+	int *sort;
+	int pos;
+	if (!ft_check_order(st->A, st->B, 0))
+	{
+		sort = ft_sorting_stack(st->A->arr, st->A->size);
+		while (st->A->size > 3)
+			ft_print_command(ft_strdup("pb"), st);
+		ft_algo_three_num(st);
+		while (st->B->size){
+			pos = ft_min_in_max(st->B->arr[0], st->A);
+			ft_min_up(st, ft_find_pos(pos, st->A));
+			ft_print_command(ft_strdup("pa"), st);
+		}
+		ft_min_up(st, ft_find_pos(sort[0], st->A));
+	}
+}
+
+void	ft_algo(t_stack *st, int start, int end)
+{
+	int hold_first;
+	int hold_second;
+
+	hold_first = 0;
+	hold_second = st->A->size - 1;
+	while (hold_first < st->A->size && !(st->A->arr[hold_first] >= start && st->A->arr[hold_first] <= end))
+		hold_first++;
+	while (hold_second >= 0 && !(st->A->arr[hold_second] >= start && st->A->arr[hold_second] <= end))
+		hold_second--;
+	if (hold_first != st->A->size)
+	{
+		if (hold_first <= st->A->size / 2 && hold_second > st->A->size / 2)
+		{
+			if (hold_first <= st->A->size - hold_second)
+				ft_put_up(st->A->arr[hold_first], st, 0);
+			else
+				ft_put_up(st->A->arr[hold_second], st, 0);
+		}
+		else if (hold_first > st->A->size / 2 && hold_second > st->A->size / 2)
+			ft_put_up(st->A->arr[hold_second], st, 0);
+		else
+			ft_put_up(st->A->arr[hold_first], st, 0);
+		if (st->B->size > 1)
+			ft_find_place(st->A->arr[0], st, 1);
+		ft_print_command(ft_strdup("pb"), st);
+		ft_algo(st, start, end);
+	}
+}
+
+void	ft_big_algo(t_stack *st, int part)
+{
+	int i;
+	int *sort;
+	int size;
+
+	i = 0;
+	size = st->A->size;
+	sort = ft_sorting_stack(st->A->arr, st->A->size);
+	while (++i <= part)
+		if (i != part)
+			ft_algo(st, sort[(size / part) * i - (size / part)], sort[(size / part) * i - 1]);
+		else
+			ft_algo(st, sort[(size / part) * i - (size / part)], sort[size - 1]);
+	// printf("%d\n", sort[size - 1]);
+	ft_put_up(sort[size - 1], st, 1);
+	while (st->B->size)
+		ft_print_command(ft_strdup("pa"), st);
 }
 
 void	ft_changes(t_stack *st)
 {
-	t_lst	*ch_A_begin;
-	int i;
-
-	i = -1;
-	if (!(ch_A_begin = ft_new_list(st->A->size, 0)))
-		error();
-	while (++i < st->A->size) {
-			ch_A_begin->ch->arr[i] = st->A->arr[i];
+	if (!ft_check_order(st->A, st->B, 0))
+	{
+		if (st->A->size == 2)
+			ft_print_command(ft_strdup("sa"), st);
+		else if (st->A->size > 2 && st->A->size <= 5)
+			ft_algo_five_num(st);
+		else if (st->A->size > 5 && st->A->size <= 49)
+			ft_big_algo(st, 2);
+		else if (st->A->size > 49 && st->A->size <= 99)
+			ft_big_algo(st, 4);
+		else if (st->A->size > 99 && st->A->size <= 200)
+			ft_big_algo(st, 5);
+		else if (st->A->size > 200 && st->A->size <= 400)
+			ft_big_algo(st, 8);
+		else if (st->A->size > 400 && st->A->size <= 499)
+			ft_big_algo(st, 10);
+		else if (st->A->size > 499)
+			ft_big_algo(st, 11);
 	}
-	ft_algorithm(st, ch_A_begin);
 }
-
 
 int		main(int ac, char **av)
 {
@@ -439,9 +656,12 @@ int		main(int ac, char **av)
 	if (ac == 1)
 		return (0);
 	count = ft_count_digit(av, ac);
+	// printf("%d\n", count);
 	if (!(st = ft_create_stack(count)))
 			error();
-	st->A->arr = ft_valid_digit((ac - 1), count, av);
+	if (!ft_strcmp(av[1], "-v"))
+		st->fl_v = 1;
+	st->A->arr = ft_valid_digit(ac, count, av, st->fl_v);
 	ft_changes(st);
 	return (0);
 }
