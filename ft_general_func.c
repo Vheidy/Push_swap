@@ -6,164 +6,24 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/12 08:14:14 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/06 17:47:33 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/09 16:57:28 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker_push_swap.h"
 
-int		ft_create_chunk(t_chunk *st, int ac)
-{
-	if (!(st->arr = malloc(sizeof(int) * ac)))
-		return 0;
-	st->size = ac;
-	return 1;
-}
-
-
-int		ft_count_digit(char **av, int ac)
+int		ft_check_back_order(t_chunk *tmp_st)
 {
 	int i;
-	int count;
 
-	count = 0;
-	while (--ac)
-	{
-		i = -1;
-		while (av[ac][++i])
-			if ((ft_isdigit(av[ac][i]) && i == 0) ||\
-			(i == 0 && av[ac][i] == '-' && ft_isdigit(av[ac][i + 1]))
-			|| (av[ac][i] == ' ' && ft_isdigit(av[ac][i + 1])) || \
-			(av[ac][i] == '-' && i > 0 && av[ac][i - 1] == ' ' && ft_isdigit(av[ac][i + 1])))
-				count++;
-	}
-	return count;
-}
-
-t_stack	*ft_create_stack(int ac)
-{
-	t_stack *st;
-
-	if (!(st = (t_stack *)malloc(sizeof(t_stack))) || !(st->A = (t_chunk *)malloc(sizeof(t_chunk))) || !(st->B = (t_chunk *)malloc(sizeof(t_chunk))))
-		return NULL;
-	if (!ft_create_chunk(st->A, ac) || !ft_create_chunk(st->B, 0))
-		return NULL;
-	st->A->size = ac;
-	st->B->size = 0;
-	st->fl_v = 0;
-	st->op = A;
-	return st;
-}
-
-t_lst		*ft_new_list(int content_size, t_lst *before)
-{
-	t_lst *list;
-
-	if (!(list = (t_lst *)malloc(sizeof(t_lst))) || !(list->ch = (t_chunk *)malloc(sizeof(t_chunk))))
-		return (NULL);
-	if (content_size)
-		if (!(list->ch->arr = malloc(sizeof(int) * content_size)))
-			return NULL;
-	list->ch->size = content_size;
-	list->next = NULL;
-	list->before = before;
-	return (list);
-}
-
-// void	ft_dellst(t_lst *list)
-// {
-// 	free(list->ch->arr);
-// 	list = list->before;
-// 	list->next = NULL;
-// }
-
-int	ft_check_back_order(t_chunk *tmp_st)
-{
-	int i;
-	
 	i = 0;
 	while (i + 1 < tmp_st->size)
 	{
 		if (tmp_st->arr[i] < tmp_st->arr[i + 1])
-			return 0;
+			return (0);
 		i++;
 	}
-	return 1;
-}
-
-int		ft_int_len(int elem)
-{
-	int len;
-
-	len = (elem < 0) ? 1 : 0;
-	elem = len ? -elem : elem;
-	while (elem / 10 > 0){
-		elem /= 10;
-		len++;
-	}
-	len++;
-	return len;
-}
-
-void	ft_print_part(int elem, int fl)
-{
-	int space;
-
-	space = 10;
-	write (1, "|", 1);
-	if (!fl)
-	{
-		ft_putnbr(elem);
-		while (space-- - ft_int_len(elem))
-			write (1, " ", 1);
-	}
-	else
-	{
-		while (space--)
-			write (1, " ", 1);
-	}
-	write (1, "|", 1);
-}
-
-void	ft_print_command(char *str, t_stack *st)
-{
-	int end;
-	int i;
-	int space;
-
-	i = 0;
-	space = 11;
-	ft_putstr(str);
-	write(1, "\n", 1);
-	if (!ft_choose_command(str, st->A, st->B, 0))
-		error();
-	end = (st->A->size > st->B->size) ? st->A->size : st->B->size;
-	if (st->fl_v)
-	{
-		write(1, "------A-----------B------\n", 26);
-		while (i < end){
-			if (i < st->A->size && i < st->B->size)
-			{
-				ft_print_part(st->A->arr[i], 0);
-				ft_print_part(st->B->arr[i], 0);
-				write(1, "\n", 1);
-			}
-			else if (i < st->A->size)
-			{
-				ft_print_part(st->A->arr[i], 0);
-				ft_print_part(0, 1);
-				write(1, "\n", 1);
-			}
-			else if (i < st->B->size)
-			{
-				ft_print_part(0, 1);
-				ft_print_part(st->B->arr[i], 0);
-				write(1, "\n", 1);
-			}
-			i++;
-		}
-		write(1, "-------------------------\n", 26);
-	}
+	return (1);
 }
 
 void	ft_swap_pointer(int *first, int *second)
@@ -211,34 +71,18 @@ int		*ft_sorting_stack(int *stack, int size)
 	return (sort);
 }
 
-
-void	error()
-{
-	write(1, "Error\n", 6);
-	exit(0);
-}
-
-// int	ft_create_struct(t_stack *st, int ac)
-// {
-// 	if (!(st->stack_A = malloc(sizeof(int) * ac)) || !(st->stack_B = malloc(sizeof(int) * 0)))
-// 		return 0;
-// 	st->size_A = ac;
-// 	st->size_B = 0;
-// 	st->flag = 0;
-// 	return 1;
-// }
-
-int		ft_check_order(t_chunk *A, t_chunk *B, int fl)
+int		ft_check_order(t_chunk *a, t_chunk *b, int fl)
 {
 	int i;
 
 	i = 0;
-	if (B->size && fl)
-		return 0;
-	while (i + 1 < A->size) {
-		if (A->arr[i] > A->arr[i + 1])
-			return 0;
+	if (b->size && fl)
+		return (0);
+	while (i + 1 < a->size)
+	{
+		if (a->arr[i] > a->arr[i + 1])
+			return (0);
 		i++;
 	}
-	return 1;
+	return (1);
 }

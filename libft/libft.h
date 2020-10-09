@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 21:24:59 by vheidy            #+#    #+#             */
-/*   Updated: 2020/09/03 10:49:29 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/09 16:46:45 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct		s_gnl
 
 int					get_next_line(const int fd, char **line);
 
+int					ft_int_len(int elem);
 char				*ft_strjoin_free(char *s1, char *s2, int f1, int f2);
 void				ft_putnbr_fd(int n, int fd);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));

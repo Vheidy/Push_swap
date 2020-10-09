@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 14:29:48 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/05 19:59:21 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/09 22:06:58 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,55 +18,38 @@
 # include <stdio.h>
 # include "libft/libft.h"
 
-// typedef struct		s_stack {
-// 	int				*stack_A;
-// 	int				*stack_B;
-// 	int				size_A;
-// 	int				size_B;
-// 	int				flag;
-// }					t_stack;
-
-enum stack {
-	A,
-	B
-};
-
-typedef struct		s_chunk
+typedef struct	s_chunk
 {
-	int				*arr;
-	int				size;
-}					t_chunk;
+	int			*arr;
+	int			size;
+}				t_chunk;
 
-typedef struct		s_stack
+typedef struct	s_stack
 {
-	t_chunk			*A;
-	t_chunk			*B;
-	int				fl_v;
-	enum stack		op;
-}					t_stack;
+	t_chunk		*a;
+	t_chunk		*b;
+	int			fl_v;
+	int			fl_c;
+}				t_stack;
 
-
-
-typedef struct		s_lst
-{
-	t_chunk			*ch;
-	struct s_lst	*next;
-	struct s_lst	*before;
-}					t_lst;
-
-void	ft_dellst(t_lst *list);
-int		ft_check_back_order(t_chunk *tmp_st);
-t_stack	*ft_create_stack(int ac);
-t_lst	*ft_new_list(int content_size, t_lst *before);
-void	ft_print_command(char *str, t_stack *st);
-int		*ft_sorting_stack(int *stack, int size);
-void	ft_push(int **from, int **where, int *size_fr, int *size_wr);
-int		ft_check_order(t_chunk *A, t_chunk *B, int fl);
-int		ft_choose_command(char *str, t_chunk *stack_A, t_chunk *stack_B, int flag);
-// int		ft_choose_command(char *str, t_stack *st);
-int		*ft_valid_digit(int ac, int count, char **av, int fl);
-void	error();
-int		ft_create_struct(t_stack *st, int ac);
-int		ft_count_digit(char **av, int ac);
+void			ft_merge_dir(char **str, int size, int fl);
+void			ft_algo_five_num(t_stack *st);
+void			ft_algo_three_num(t_stack *st);
+void			ft_find_place(int elem, t_stack *st, int f);
+void			ft_put_up(int elem, t_stack *st, int fl);
+void			ft_full_output(char **output, t_stack *st, int end);
+void			ft_delete_stack(t_stack *st);
+int				ft_check_back_order(t_chunk *tmp_st);
+t_stack			*ft_create_stack(int ac);
+void			ft_print_command(char *str, t_stack *st, int fl);
+int				*ft_sorting_stack(int *stack, int size);
+void			ft_push(int **from, int **where, int *size_fr, int *size_wr);
+int				ft_check_order(t_chunk *a, t_chunk *b, int fl);
+int				ft_choose_command(char *str, t_chunk *stack_a, \
+				t_chunk *stack_b, int flag);
+int				*ft_valid_digit(int ac, int count, char **av, int fl);
+void			error(void);
+int				ft_create_struct(t_stack *st, int ac);
+int				ft_count_digit(char **av, int ac);
 
 #endif

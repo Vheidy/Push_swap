@@ -1,77 +1,75 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_algorithm.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/09 19:14:23 by vheidy            #+#    #+#             */
+/*   Updated: 2020/10/09 19:47:21 by vheidy           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "checker_push_swap.h"
 
-int	ft_check_back_order(t_chunk *tmp_st)
+void	ft_put_up(int elem, t_stack *st, int fl)
 {
-	int i;
-	
-	i = 0;
-	while (i + 1 < tmp_st->size)
-	{
-		if (tmp_st->arr[i] < tmp_st->arr[i + 1])
-			return 0;
-		i++;
-	}
-	return 1;
-}
+	int		pos;
+	t_chunk *tmp;
 
-int	ft_create_tmp_struct(t_chunk *tmp_st, int mid)
-{
-	if (!(tmp_st->arr = malloc(sizeof(int) * mid)))
-		return 0;
-	tmp_st->size = mid;
-	return 1;
-}
-
-void	ft_from_A_B(t_stack *st, t_stack *ch_base)
-{
-	int *sort_bs;
-	int mid;
-	int i;
-	int count;
-
-	sort_bs = ft_sorting_stack(ch_base->stack_A, ch_base->size_A);
-	mid = ch_base->size_A / 2;
-	i = mid;
-	if (ch_base->size_A > 2 && !ft_check_order(ch_base, 0))
-	{
-		while (ch_base->size_B != mid)
-		{
-			if (st->stack_A[0] < sort_bs[mid])
-			{
-				ft_push()
-				ft_print_command(ft_strdup("pb"), st);
-			}
-			else if (!ch_base->flag && st->stack_A[st->size_A - 1] < sort_bs[mid])
-				ft_print_command(ft_strdup("rra"), st);
+	pos = -1;
+	tmp = (fl) ? st->b : st->a;
+	while (++pos < tmp->size)
+		if (tmp->arr[pos] == elem)
+			break ;
+	if (pos <= tmp->size / 2)
+		while (pos--)
+			if (!fl)
+				ft_print_command(ft_strdup("ra"), st, 0);
 			else
-			{
-				ft_print_command(ft_strdup("ra"), st);
-				count++;
-			}
-		}
-		if (ch_base->flag)
-			while (count--)
-				ft_print_command(ft_strdup("rra"), st);
-		if (!ft_check_order(ch_base, 0))
-			ft_from_A_B(st, ch_base);
-	}
-	if (!ft_check_order(ch_base, 0))
-		ft_print_command(ft_strdup("sa"), st);
+				ft_print_command(ft_strdup("rb"), st, 0);
+	else
+		while (tmp->size - (pos++))
+			if (!fl)
+				ft_print_command(ft_strdup("rra"), st, 0);
+			else
+				ft_print_command(ft_strdup("rrb"), st, 0);
 }
 
-ft_changes(t_stack *st, t_stack *chunk)
+void	ft_find_max_less(int elem, int curr, int *fl, int *max_less)
 {
-	// t_chunk ch_B;
-	// t_chunk ch_A;
+	if (curr < elem)
+	{
+		if (!*fl)
+		{
+			*max_less = curr;
+			*fl = 1;
+		}
+		else if (*fl && curr > *max_less)
+			*max_less = curr;
+	}
+}
 
-	// if (!ft_create_struct(&ch_B, chunk->size / 2))
-	// 	error();
-	// sort_st = ft_sorting_stack(chunk->arr, chunk->size);
-	ft_from_A_B(st, chunk);
-	chunk->flag = 1;
-	// if (!ft_create_struct(&ch_A, ch_B.size / 2 - 1))
-	// 	error();
-	ft_from_B_A(st, chunk);
-	if (!ft_check_order(chunk, 0))
-		ft_changes(st, chunk->stack_A);
+void	ft_find_place(int elem, t_stack *st, int f)
+{
+	int		i;
+	int		max_less;
+	int		fl;
+	int		*sort;
+	t_chunk	*tmp;
+
+	i = -1;
+	fl = 0;
+	max_less = 0;
+	tmp = (!f) ? st->a : st->b;
+	while (++i < tmp->size)
+		ft_find_max_less(elem, tmp->arr[i], &fl, &max_less);
+	if (fl)
+		ft_put_up(max_less, st, f);
+	else
+	{
+		sort = ft_sorting_stack(tmp->arr, tmp->size);
+		ft_put_up(sort[tmp->size - 1], st, f);
+		free(sort);
+	}
 }

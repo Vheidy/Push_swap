@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker.h                                          :+:      :+:    :+:   */
+/*   ft_int_len.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/05 14:29:48 by vheidy            #+#    #+#             */
-/*   Updated: 2020/08/11 17:24:43 by vheidy           ###   ########.fr       */
+/*   Created: 2020/10/09 16:46:09 by vheidy            #+#    #+#             */
+/*   Updated: 2020/10/09 19:11:20 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CHECKER_H
-# define CHECKER_H
+#include "libft.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include "libft/libft.h"
+int		ft_int_len(int elem)
+{
+	int len;
 
-typedef struct		s_stack {
-	int				*stack_A;
-	int				*stack_B;
-	int				size_A;
-	int				size_B;
-	int				flag;
-}					t_stack;
-
-int		ft_choose_command(char *str, t_stack *st);
-int		*ft_valid_digit(int ac, char **av);
-void	error();
-int		ft_check_order(t_stack *st);
-
-#endif
+	len = (elem < 0) ? 1 : 0;
+	elem = len ? -elem : elem;
+	while (elem / 10 > 0)
+	{
+		elem /= 10;
+		len++;
+	}
+	len++;
+	return (len);
+}
