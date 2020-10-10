@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 14:29:48 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/09 22:06:58 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/10 23:42:14 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 # include <unistd.h>
 # include <stdio.h>
 # include "libft/libft.h"
+
+# define ANSI_RED				"\x1b[31m"
+# define ANSI_GREEN				"\x1b[32m"
+# define ANSI_YELLOW			"\x1b[33m"
+# define ANSI_BLUE				"\x1b[34m"
+# define ANSI_CYAN				"\x1b[36m"
+# define ANSI_RESET				"\x1b[0m"
 
 typedef struct	s_chunk
 {

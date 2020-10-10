@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/09 21:38:00 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/09 22:30:24 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/10 23:04:18 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,13 @@ void	ft_merge_dir(char **str, int size, int fl)
 		dir[i] = (char*)malloc(sizeof(char) * 12);
 		while(++j < 11)
 			ft_create_dir(i, j, dir, fl);
-		printf("%s\n", dir[i]);
 		dir[i][j] = '\0';
 	}
 	dir[size - 1] = NULL;
-	i = -1;
-	printf("--ok--\n");
-	while (*tmp)
-		*tmp = ft_strjoin_free(*str++, *dir++, 0, 1);
+	while (*dir)
+	{
+		*tmp = ft_strjoin_free(*tmp, *dir, 0, 1);
+		tmp++;
+		dir++;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/09 16:49:57 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/09 22:17:02 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/10 23:46:35 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,21 @@ void	ft_print_with_color(char **output, int end, char *str)
 	while (output[i])
 	{
 		j = 0;
-		if (!i || i == end)
-			write(1, "\x1b[31m", 5);
+		if ((!i || i == end) && (!j || j == 39))
+			write(1, ANSI_RED, 5);
 		else
-			write(1, "\x1b[33m", 5);
+			write(1, ANSI_YELLOW, 5);
 		while (output[i][j])
 		{
-			if (ft_check_place(str, i, j, end))
-				write(1, "\x1b[32m", 5);
-			if ((j == 11 || j == 23) && i && i != end)
-				write(1, "\x1b[33m", 5);
+			if (ft_check_place(str, i, j, end) || ((j == 24) && (!i || i == 1 || i == 2 || i == 3)))
+				write(1, ANSI_GREEN, 5);
+			if ((j == 11 || j == 23 || j == 35) && i && i != end)
+				write(1, ANSI_YELLOW, 5);
+			if ((!i || i == end) && (!j || j == 35))
+				write(1, ANSI_RED, 5);
 			write(1, &output[i][j++], 1);
-			if (i == end && j == 24)
-				write(1, "\x1b[0m", 5);
+			if (i == end && j == 59)
+				write(1, ANSI_RESET, 5);
 		}
 		write(1, "\n", 1);
 		i++;
@@ -92,11 +94,11 @@ void	ft_merge_output(char **tmp, char **output, char *str, int size)
 	else if (!ft_strcmp(str, ft_strdup("rb")) || !ft_strcmp(str, ft_strdup("ra")) \
 	|| !ft_strcmp(str, ft_strdup("rr")))
 		ft_merge_dir(tmp, size, 3);
-	// printf("--ok--\n");
 	while (*tmp)
 	{
-		*head = ft_strjoin_free(*tmp, *head, 1, 1);
+		*head = ft_strjoin_free(*tmp, *head, 1, 0);
 		tmp++;
+		head++;
 	}
 }
 
