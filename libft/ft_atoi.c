@@ -6,13 +6,13 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 17:38:31 by vheidy            #+#    #+#             */
-/*   Updated: 2020/08/12 08:19:04 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/11 14:47:29 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	space(char c)
+static int		space(char c)
 {
 	if (c == ' ' || c == '\n' || c == '\f' || c == '\v'
 			|| c == '\t' || c == '\r')
@@ -20,7 +20,7 @@ static int	space(char c)
 	return (0);
 }
 
-int			ft_atoi(const char *s)
+long long int	ft_atoi(const char *s)
 {
 	int				fl;
 	long long int	at;

@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 17:57:42 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/09 18:08:18 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/13 19:37:40 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,22 +81,23 @@ void	ft_push(int **from, int **where, int *size_fr, int *size_wr)
 
 	i = -1;
 	j = 0;
-	*size_fr -= 1;
-	*size_wr += 1;
-	tmp = (*from)[0];
-	if (*size_fr > 0)
-		new_from = malloc(sizeof(int) * (*size_fr));
-	while (++i < *size_fr)
-		new_from[i] = (*from)[i + 1];
-	new_where = malloc(sizeof(int) * (*size_wr));
-	new_where[j] = tmp;
-	while (++j < *size_wr)
-		new_where[j] = (*where)[j - 1];
-	free(*from);
-	if (*size_wr - 1)
-		free(*where);
-	*from = new_from;
-	*where = new_where;
+	if (*size_fr)
+	{
+		*size_fr -= 1;
+		*size_wr += 1;
+		tmp = (*from)[0];
+		if (*size_fr > 0)
+			new_from = malloc(sizeof(int) * (*size_fr));
+		while (++i < *size_fr)
+			new_from[i] = (*from)[i + 1];
+		new_where = malloc(sizeof(int) * (*size_wr));
+		new_where[j] = tmp;
+		while (++j < *size_wr)
+			new_where[j] = (*where)[j - 1];
+		ft_small_free(from, where, size_wr);
+		*from = new_from;
+		*where = new_where;
+	}
 }
 
 int		ft_choose_command(char *str, t_chunk *stack_a, \

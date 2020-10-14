@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 17:59:37 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/09 19:10:01 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/13 17:51:09 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,14 @@ int		ft_check_repeat(int *stack, int ac)
 
 char	*ft_check_val(char *str)
 {
-	while (*str == '0')
+	if (*str == '+' || *str == '-')
+		str++;
+	while (*str == '0' || *str == ' ')
 		str++;
 	return (str);
 }
 
-int		ft_check_digit(char *str)
+int		ft_check_digit(char *str, int *f)
 {
 	int i;
 	int fl;
@@ -46,8 +48,10 @@ int		ft_check_digit(char *str)
 	fl = 0;
 	while (str[++i] != '\0')
 	{
+		if (ft_isdigit(str[i]))
+			*f = 1;
 		if (!ft_isdigit(str[i]) && str[i] != ' ' && \
-		!(str[i] == '-' && ft_isdigit(str[i + 1])))
+		!((str[i] == '-' || str[i] == '+') && ft_isdigit(str[i + 1])))
 			return (0);
 		if (str[i] == ' ' && ft_isdigit(str[i + 1]))
 			fl = 1;
@@ -59,30 +63,27 @@ int		ft_check_digit(char *str)
 	return (1);
 }
 
-void	ft_read_string(int *tmp, int ac, char **av, int *count)
+void	ft_cycle(char **av, int ac, int **tmp, int *count)
 {
-	int				i;
-	long long int	elem;
+	int				f;
+	long long int	ch;
 
-	i = ft_strlen(av[ac]);
-	while (--i >= 0)
+	f = 0;
+	ch = ft_atoi(av[ac]);
+	if (!ft_check_digit(av[ac], &f) || ch > 2147483647 || ch < (-2147483648))
+		error();
+	if (ft_check_digit(av[ac], &f) == 2)
+		ft_read_string(tmp, ac, av, count);
+	else if (f)
 	{
-		if ((ft_isdigit(av[ac][i]) && i == 0) || \
-			(av[ac][i] == ' ' && ft_isdigit(av[ac][i + 1])) || \
-		(av[ac][i] == '-' && av[ac][i - 1] == ' ' && ft_isdigit(av[ac][i + 1])))
-		{
-			elem = ft_atoi(&av[ac][i]);
-			if (elem > 2147483647 || elem < (-2147483647))
-				error();
-			tmp[(*count)--] = elem;
-		}
+		(*tmp)[*count] = ch;
+		(*count)--;
 	}
 }
 
 int		*ft_valid_digit(int ac, int count, char **av, int fl)
 {
 	int				*tmp;
-	long long int	ch;
 	int				i;
 	int				end;
 
@@ -90,17 +91,9 @@ int		*ft_valid_digit(int ac, int count, char **av, int fl)
 	end = (fl) ? 1 : 0;
 	if (!(tmp = malloc(sizeof(int) * count)))
 		return (NULL);
+	count--;
 	while (--ac > end)
-	{
-		count--;
-		ch = ft_atoi(av[ac]);
-		if (!ft_check_digit(av[ac]) || ch > 2147483647 || ch < (-2147483647))
-			error();
-		if (ft_check_digit(av[ac]) == 2)
-			ft_read_string(tmp, ac, av, &count);
-		else
-			tmp[count] = ch;
-	}
+		ft_cycle(av, ac, &tmp, &count);
 	if (!ft_check_repeat(tmp, i))
 		error();
 	return (tmp);

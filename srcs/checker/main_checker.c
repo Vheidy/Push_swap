@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 11:57:19 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/09 17:20:57 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/13 16:45:58 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,10 @@ int		ft_read_command(t_stack *st)
 {
 	int		red;
 	char	*buf;
-	char	*str;
 
 	while ((red = get_next_line(0, &buf)))
 	{
-		if (!(ft_choose_command((str = ft_crop(buf)), st->a, st->b, 0)))
-			error();
-		ft_print_command(str, st, 1);
+		ft_print_command(ft_crop(buf), st, 1);
 		free(buf);
 	}
 	if (ft_check_order(st->a, st->b, 1))
@@ -62,6 +59,8 @@ int		main(int ac, char **av)
 			st->fl_c = 1;
 		st->fl_v = 1;
 	}
+	if (ac == 2 && st->fl_v)
+		return (0);
 	st->a->arr = ft_valid_digit(ac, count, av, st->fl_v);
 	ft_read_command(st);
 	ft_delete_stack(st);

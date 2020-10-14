@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/09 18:17:47 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/09 21:31:44 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/11 20:41:08 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	ft_full_part(char **str, int elem, int fl)
 	char	*res;
 
 	i = 0;
-	space = 10;
-	res = (char *)malloc(sizeof(char) * 27);
+	space = 11;
+	res = (char *)malloc(sizeof(char) * 14);
 	res[i++] = '|';
 	if (!fl)
 		ft_full_elem(space, &res, &i, elem);
@@ -43,7 +43,7 @@ void	ft_full_part(char **str, int elem, int fl)
 			res[i++] = ' ';
 	res[i++] = '|';
 	res[i] = '\0';
-	*str = ft_strjoin_free(*str, res, 0, 1);
+	*str = ft_strjoin_free_all(str, &res);
 }
 
 void	ft_create_parts(int i, t_stack *st, char **output)
@@ -70,17 +70,34 @@ void	ft_create_parts(int i, t_stack *st, char **output)
 	}
 }
 
-void	ft_full_output(char **output, t_stack *st, int end)
+char	**ft_full_output(char **output, t_stack *st, int end)
 {
-	int i;
+	int		i;
+	char	**tmp;
 
 	i = 0;
-	output[end + 2] = NULL;
-	while (++i < end + 2)
-		output[i] = ft_strnew(26);
-	i = 0;
-	output[0] = "-----A-----------B------\0";
+	tmp = output;
+	tmp[end + 2] = NULL;
 	while (++i < end + 1)
-		ft_create_parts(i, st, output);
-	output[i] = "------------------------\0";
+		tmp[i] = ft_strnew(27);
+	i = 0;
+	tmp[0] = ft_strdup("-----A------  -----B------");
+	while (++i < end + 1)
+		ft_create_parts(i, st, tmp);
+	tmp[i] = ft_strdup("--------------------------");
+	return (tmp);
+}
+
+void	ft_create_output(int end, t_stack *st, char **tmp, char *str)
+{
+	char **output;
+
+	output = (char**)malloc(sizeof(char*) * (end + 3));
+	ft_full_output(output, st, end);
+	ft_merge_output(tmp, output, str, end + 3);
+	if (!st->fl_c)
+		ft_print_output(output);
+	else
+		ft_print_with_color(output, end + 1, str);
+	ft_free_delim(&output);
 }

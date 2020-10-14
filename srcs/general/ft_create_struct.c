@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/09 16:43:59 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/09 17:27:17 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/12 16:45:34 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ int		ft_count_digit(char **av, int ac)
 		i = -1;
 		while (av[ac][++i])
 			if ((ft_isdigit(av[ac][i]) && i == 0) ||\
-			(i == 0 && av[ac][i] == '-' && ft_isdigit(av[ac][i + 1])) \
+			(i == 0 && (av[ac][i] == '-' || av[ac][i] == '+') \
+			&& ft_isdigit(av[ac][i + 1])) \
 			|| (av[ac][i] == ' ' && ft_isdigit(av[ac][i + 1])) || \
-			(av[ac][i] == '-' && i > 0 && av[ac][i - 1] == ' ' \
-			&& ft_isdigit(av[ac][i + 1])))
+			((av[ac][i] == '-' || av[ac][i] == '+') && i > 0 && \
+			av[ac][i - 1] == ' ' && ft_isdigit(av[ac][i + 1])))
 				count++;
 	}
 	return (count);

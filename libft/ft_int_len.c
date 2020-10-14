@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/09 16:46:09 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/09 19:11:20 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/11 15:03:26 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int		ft_int_len(int elem)
 {
 	int len;
 
+	if (elem == -2147483648)
+		return (11);
 	len = (elem < 0) ? 1 : 0;
 	elem = len ? -elem : elem;
 	while (elem / 10 > 0)

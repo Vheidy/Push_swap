@@ -6,7 +6,7 @@
 /*   By: vheidy <vheidy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 14:29:48 by vheidy            #+#    #+#             */
-/*   Updated: 2020/10/10 23:42:14 by vheidy           ###   ########.fr       */
+/*   Updated: 2020/10/13 19:49:15 by vheidy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
-# include "libft/libft.h"
+# include "libft.h"
 
 # define ANSI_RED				"\x1b[31m"
 # define ANSI_GREEN				"\x1b[32m"
@@ -39,12 +38,19 @@ typedef struct	s_stack
 	int			fl_c;
 }				t_stack;
 
+void			ft_small_free(int **from, int **where, int *size_wr);
+void			ft_read_string(int **tmp, int ac, char **av, int *count);
+void			ft_print_with_color(char **output, int end, char *str);
+void			ft_print_output(char **output);
+void			ft_create_output(int end, t_stack *st, char **tmp, char *str);
+void			ft_merge_output(char **tmp, char **output, char *str, int size);
+char			*ft_strjoin_free_new(char **s1, char **s2, int f1, int f2);
 void			ft_merge_dir(char **str, int size, int fl);
 void			ft_algo_five_num(t_stack *st);
 void			ft_algo_three_num(t_stack *st);
 void			ft_find_place(int elem, t_stack *st, int f);
 void			ft_put_up(int elem, t_stack *st, int fl);
-void			ft_full_output(char **output, t_stack *st, int end);
+char			**ft_full_output(char **output, t_stack *st, int end);
 void			ft_delete_stack(t_stack *st);
 int				ft_check_back_order(t_chunk *tmp_st);
 t_stack			*ft_create_stack(int ac);
